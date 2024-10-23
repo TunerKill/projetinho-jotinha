@@ -1,0 +1,287 @@
+/* Estilos Gerais */
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px 0px;
+    padding: 0;
+    width: 87%;
+    position: relative;
+}
+
+.meses {
+    padding: 08px 15px;
+    margin: 20px 10;
+    background-color: #ffffff;
+    border: 1px solid black;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.main-content {
+    padding: 20px;
+    transition: transform 0.3s ease;
+    margin-left: 0; /* Inicialmente sem margem */
+}
+
+/* Estilo dos Botões */
+.buttons-container {
+    display: flex;
+    gap: 10px;
+}
+
+.open-modal-button {
+    padding: 10px 20px;
+    margin: 20px 0;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: 1px solid black;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.open-modal-button:hover {
+    background-color: #7c8191;
+}
+
+/* Estilos do Menu Lateral */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Escondido fora da tela */
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    color: white;
+    transition: left 0.3s ease;
+    padding-top: 60px;
+    z-index: 1000;
+}
+
+.side-menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.side-menu ul li {
+    padding: 15px 20px;
+    border-bottom: 1px solid #444;
+}
+
+.side-menu ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+}
+
+.side-menu ul li a:hover {
+    background-color: #575757;
+}
+
+/* Quando o menu estiver ativo */
+.side-menu.active {
+    left: 0;
+}
+
+/* Ajuste o conteúdo principal quando o menu estiver ativo */
+.side-menu.active + .main-content {
+    transform: translateX(250px);
+}
+
+/* Estilo do Ícone de Hambúrguer */
+.hamburguer {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 1100; /* Acima do menu */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.hamburguer .bar {
+    width: 35px;
+    height: 5px;
+    background-color: #000000;
+    transition: 0.4s;
+}
+
+/* Efeito de animação do ícone de hambúrguer quando ativo */
+.hamburguer.active .bar:nth-child(1) {
+    transform: rotate(-45deg) translate(-7px, 7px);
+}
+
+.hamburguer.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburguer.active .bar:nth-child(3) {
+    transform: rotate(45deg) translate(-7px, -7px);
+}
+
+/* Estilos das Tabelas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table,
+th,
+td {
+    border: 1px solid rgb(41, 39, 39);
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 20;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+button.edit-btn,
+button.save-btn,
+button.delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #000000;
+    display: flex;
+    align-items: center;
+}
+
+button.edit-btn:hover,
+button.save-btn:hover,
+button.delete-btn:hover {
+    color: #0056b3;
+}
+
+/* Estilos dos Cabeçalhos Colapsáveis */
+.collapsible-header {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    margin: 10px 0;
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    user-select: none;
+}
+
+.collapsible-header .material-symbols-outlined {
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+}
+
+/* Ícone rotacionado para quando o conteúdo está expandido */
+.collapsible-header.active .material-symbols-outlined {
+    transform: rotate(180deg);
+}
+
+/* Estilos do Modal */
+.modal {
+    display: none; /* Oculto por padrão */
+    position: fixed; /* Fica fixo na tela */
+    z-index: 1001; /* Fica acima de outros elementos */
+    left: 0;
+    top: 0;
+    width: 100%; /* Largura total */
+    height: 100%; /* Altura total */
+    overflow: auto; /* Habilita scroll se necessário */
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+}
+
+/* Conteúdo do Modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* 10% do topo e centralizado */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Largura do modal */
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Botão de Fechar */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+}
+
+/* Ajustes adicionais para os formulários dentro dos modais */
+.modal-content form input,
+.modal-content form select {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+
+.modal-content form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.modal-content form button:hover {
+    background-color: #218838;
+}
+
+/* Responsividade para os Modais */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%;
+    }
+
+    .main-content {
+        margin-left: 0;
+        transform: none !important;
+    }
+
+    .side-menu.active + .main-content {
+        transform: none;
+    }
+
+
+    .somat{
+
+        color: #0056b3;
+    }
+
+}

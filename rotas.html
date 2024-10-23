@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento</title>
+
+    <!-- Link para o CSS externo -->
+    <link rel="stylesheet" href="../Styles/style.css">
+
+    <!-- Link para os ícones do Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    </head>
+    <body>
+
+    <!-- Ícone de Hambúrguer -->
+    <div class="hamburguer" id="hamburguerBtn">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <!-- Menu Lateral -->
+    <nav class="side-menu" id="sideMenu">
+        <ul>
+            <li><a href="index.html"><h2>Monitoramento</h2></a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#">2022</a></li>
+            <li><a href="#">2023</a></li>
+            <li><a href="#">2024</a></li>
+            <li><a href="#">2025</a></li>
+        </ul>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="main-content" id="mainContent">
+        <h1>Rotas</h1>
+
+        <select class="meses" id="meses" required>
+            <option value="janeiro">Janeiro</option>
+            <option value="fevereiro">Fevereiro</option>
+            <option value="marco">Março</option>
+            <option value="abril">Abril</option>
+            <option value="maio">Maio</option>
+            <option value="junho">Junho</option>
+            <option value="julho">Julho</option>
+            <option value="agosto">Agosto</option>
+            <option value="setembro">Setembro</option>
+            <option value="outubro">Outubro</option>
+            <option value="novembro">Novembro</option>
+            <option value="dezembro">Dezembro</option>
+        </select>
+
+        <!-- Botões para abrir os Modais -->
+        <div class="buttons-container">
+            <button id="openModalBtn" class="open-modal-button">Adicionar Nova Empresa Na Rota</button>
+            <button id="openNewTableModalBtn" class="open-modal-button">Adicionar Nova Tabela de Rota</button>
+        </div>
+
+        <!-- Tabelas para cada contrato -->
+        <div class="tabela-contrato">
+            <h3 class="collapsible-header">
+                <span class="material-symbols-outlined">expand_more</span> Rota 1
+            </h3>
+            <div class="collapsible-content" id="tabela-fatal" style="display: none;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Cidade</th>
+                            <th>Contribuição</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">Somatório</td>
+                            <td class="total-contribuicao">0,00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="tabela-contrato">
+            <h3 class="collapsible-header">
+                <span class="material-symbols-outlined">expand_more</span> Rota 2
+            </h3>
+            <div class="collapsible-content" id="tabela-villajack" style="display: none;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Cidade</th>
+                            <th>Contribuição</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">Somatório</td>
+                            <td class="total-contribuicao">0,00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="tabela-contrato">
+            <h3 class="collapsible-header">
+                <span class="material-symbols-outlined">expand_more</span> Rota 3
+            </h3>
+            <div class="collapsible-content" id="tabela-elite" style="display: none;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Cidade</th>
+                            <th>Contribuição</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">Somatório</td>
+                            <td class="total-contribuicao">0,00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Novo Registro -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModalBtn">&times;</span>
+            <h2>Adicionar empresa na rota</h2>
+            <form id="dataForm">
+                <input type="text" id="empresa" placeholder="Empresa" required>
+                <input type="text" id="cidade" placeholder="Cidade" required>
+                <input type="number" id="contribuicao" placeholder="Contribuição" required>  
+                <select id="contrato" required>
+                    <option value="" disabled selected hidden>Selecione a Rota</option>
+                    <option value="fatal">Rota 1</option>
+                    <option value="villajack">Rota 2</option>
+                    <option value="elite">Rota 3</option>
+                </select>
+                <button type="submit">Adicionar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Nova Tabela de Contrato -->
+    <div id="newTableModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeNewTableModalBtn">&times;</span>
+            <h2>Adicionar Nova Tabela de Rota</h2>
+            <form id="newTableForm">
+                <input type="text" id="novoContratoNome" placeholder="Nome da Rota" required>
+                <button type="submit">Criar Tabela</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Link para o JavaScript externo -->
+    <script src="../Scripts/app.js"></script>
+</body>
+</html>

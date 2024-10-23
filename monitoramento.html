@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento</title>
+
+    <!-- Link para o CSS externo -->
+    <link rel="stylesheet" href="../Styles/monitoramento.css">
+
+    <!-- Link para os ícones do Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+</head>
+<body>
+
+    <!-- Ícone de Hambúrguer -->
+    <div class="hamburguer" id="hamburguerBtn">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <!-- Menu Lateral -->
+    <nav class="side-menu" id="sideMenu">
+        <img src="logo.png" alt="Logo do Cliente" class="logo">
+        <ul>
+            <li><a class="monitorm" href="rotas.html"><h2>Rotas</h2></a></li>
+            <li><a href="#">2022</a></li>
+            <li><a href="#">2023</a></li>
+            <li><a href="#">2024</a></li>
+            <li><a href="#">2025</a></li>
+        </ul>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="main-content" id="mainContent">
+        <h1>Monitoramento</h1>
+
+        <select class="meses" id="meses" required>
+            <option value="janeiro">Janeiro</option>
+            <option value="fevereiro">Fevereiro</option>
+            <option value="marco">Março</option>
+            <option value="abril">Abril</option>
+            <option value="maio">Maio</option>
+            <option value="junho">Junho</option>
+            <option value="julho">Julho</option>
+            <option value="agosto">Agosto</option>
+            <option value="setembro">Setembro</option>
+            <option value="outubro">Outubro</option>
+            <option value="novembro">Novembro</option>
+            <option value="dezembro">Dezembro</option>
+        </select>
+
+        <!-- Botões para abrir os Modais -->
+        <div class="buttons-container">
+            <button id="openModalBtn" class="open-modal-button">Adicionar Nova Empresa</button>
+            <button id="openNewTableModalBtn" class="open-modal-button">Adicionar Nova Tabela de Contrato</button>
+        </div>
+
+        <!-- As tabelas serão adicionadas dinamicamente aqui -->
+        <div id="tabelasContainer"></div>
+    </div>
+
+    <!-- Modal para Adicionar Novo Registro -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModalBtn">&times;</span>
+            <h2>Adicionar Nova Empresa</h2>
+            <form id="dataForm">
+                <input type="text" id="empresa" placeholder="Empresa" required>
+                <input type="text" id="cidade" placeholder="Cidade" required>
+                <input type="number" id="contribuicao" placeholder="Contribuição" required>  
+                <select id="contrato" required>
+                    <option value="" disabled selected hidden>Selecione o Contrato</option>
+                </select>
+                <button type="submit">Adicionar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Nova Tabela de Contrato -->
+    <div id="newTableModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeNewTableModalBtn">&times;</span>
+            <h2>Adicionar Nova Tabela de Contrato</h2>
+            <label for="tableColor">Escolha a cor do cabeçalho da tabela:</label>
+            <input type="color" id="tableColor" value="#ffffff"> <!-- Cor padrão branca -->
+            <form id="newTableForm">
+                <input type="text" id="novoContratoNome" placeholder="Nome do Contrato" required>
+                <button type="submit">Criar Tabela</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Link para o JavaScript externo -->
+    <script src="../Scripts/monitoramento.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Seleciona os elementos dos modais
+            const modal = document.getElementById('modal');
+            const openModalBtn = document.getElementById('openModalBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+
+            const newTableModal = document.getElementById('newTableModal');
+            const openNewTableModalBtn = document.getElementById('openNewTableModalBtn');
+            const closeNewTableModalBtn = document.getElementById('closeNewTableModalBtn');
+
+            // Funções para abrir e fechar o modal de adicionar registros
+            openModalBtn.addEventListener('click', () => {
+                modal.style.display = 'block';
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            // Funções para abrir e fechar o modal de adicionar nova tabela
+            openNewTableModalBtn.addEventListener('click', () => {
+                newTableModal.style.display = 'block';
+            });
+
+            closeNewTableModalBtn.addEventListener('click', () => {
+                newTableModal.style.display = 'none';
+            });
+
+            // Fecha os modais ao clicar fora do conteúdo
+            window.addEventListener('click', (event) => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+                if (event.target == newTableModal) {
+                    newTableModal.style.display = 'none';
+                }
+            });
+
+            // Manipula o envio do formulário para adicionar registros
+            document.getElementById('dataForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                addRow();
+                modal.style.display = 'none'; // Fecha o modal após adicionar
+            });
+
+            function addRow() {
+                const empresa = document.getElementById('empresa').value.trim();
+                localStorage.setItem('empresaSelecionada', document.getElementById('empresa').value);
+
+                const cidade = document.getElementById('cidade').value.trim();
+                const contribuicaoInput = document.getElementById('contribuicao').value.trim();
+                const contribuicao = parseFloat(contribuicaoInput.replace(',', '.'));
+                
+                const contrato = document.getElementById('contrato').value;
+
+                if (!contrato) {
+                    alert('Por favor, selecione um contrato.');
+                    return;
+                }
+
+                if (!empresa || !cidade || isNaN(contribuicao)) {
+                    alert('Por favor, preencha todos os campos obrigatórios com valores válidos.');
+                    return;
+                }
+
+                // Encontrar a tabela correta com base no contrato selecionado
+                const tableBody = document.querySelector(`#tabela-${contrato} tbody`);
+                if (!tableBody) {
+                    alert('Tabela do contrato selecionado não encontrada.');
+                    return;
+                }
+                const table = tableBody.parentElement; // Obtém a tabela
+
+                const newRow = tableBody.insertRow();
+
+                // Adicionar as células com conteúdo e botões
+                newRow.innerHTML = `
+                    <td class="editable">${empresa}</td>
+                    <td class="editable">${cidade}</td>
+                    <td class="editable">${contribuicao.toFixed(2).replace('.', ',')}</td>
+                    <td class="action-buttons">
+                        <button class="edit-btn material-symbols-outlined">edit</button>
+                        <button style="display:none" class="save-btn material-symbols-outlined">save</button>
+                        <button class="delete-btn material-symbols-outlined">delete</button>
+                    </td>
+                `;
+
+                // Atualizar o total
+                updateTotal(table);
+
+                // Limpar o formulário
+                document.getElementById('dataForm').reset();
+            }
+
+            // Manipula o envio do formulário para adicionar nova tabela
+            document.getElementById('newTableForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const novoContratoNome = document.getElementById('novoContratoNome').value.trim();
+                const selectedColor = document.getElementById('tableColor').value; // Obtém a cor selecionada
+
+                if (!novoContratoNome) {
+                    alert('Por favor, insira o nome do contrato.');
+                    return;
+                }
+
+                // Cria um ID único para a nova tabela, baseado no nome do contrato
+                const contratoIdSuffix = novoContratoNome.toLowerCase().replace(/\s+/g, '-');
+                const contratoId = `tabela-${contratoIdSuffix}`;
+
+                // Verifica se uma tabela com o mesmo nome já existe
+                if (document.getElementById(contratoId)) {
+                    alert('Confirmar ação.');
+                    return;
+                }
+
+                // Cria os elementos HTML para a nova tabela
+                const tabelaContratoDiv = document.createElement('div');
+                tabelaContratoDiv.classList.add('tabela-contrato');
+
+                const header = document.createElement('h3');
+                header.classList.add('collapsible-header');
+                header.innerHTML = `<span class="material-symbols-outlined">expand_more</span> ${novoContratoNome}`;
+
+                const collapsibleContent = document.createElement('div');
+                collapsibleContent.classList.add('collapsible-content');
+                collapsibleContent.id = contratoId;
+                collapsibleContent.style.display = 'none';
+
+                const table = document.createElement('table');
+
+                const thead = document.createElement('thead');
+                thead.style.backgroundColor = selectedColor; // Aplica a cor ao cabeçalho
+                thead.innerHTML = `
+                    <tr>
+                        <th>Empresa</th>
+                        <th>Cidade</th>
+                        <th>Contribuição</th>
+                        <th>Ações</th>
+                    </tr>
+                `;
+                table.appendChild(thead);
+
+                const tbody = document.createElement('tbody');
+                table.appendChild(tbody);
+
+                // Adicione o tfoot
+                const tfoot = document.createElement('tfoot');
+                tfoot.innerHTML = `
+                    <tr>
+                        <td class="total-contribuicao2" colspan="2">Somatório</td>
+                        <td class="total-contribuicao">0,00</td>
+                        <td></td>
+                    </tr>
+                `;
+                table.appendChild(tfoot);
+
+                collapsibleContent.appendChild(table);
+                tabelaContratoDiv.appendChild(header);
+                tabelaContratoDiv.appendChild(collapsibleContent);
+
+                // Adiciona a nova tabela ao conteúdo principal
+                const mainContent = document.getElementById('tabelasContainer');
+                mainContent.appendChild(tabelaContratoDiv);
+
+                // Limpa o formulário e fecha o modal
+                document.getElementById('newTableForm').reset();
+                newTableModal.style.display = 'none';
+
+                alert(`Tabela "${novoContratoNome}" adicionada com sucesso!`);
+            });
+
+            // Função para atualizar o total da contribuição na tabela
+            function updateTotal(table) {
+                const tbody = table.querySelector('tbody');
+                const totalCell = table.querySelector('.total-contribuicao');
+
+                let total = 0;
+                Array.from(tbody.rows).forEach(row => {
+                    const contribuicaoText = row.cells[2].textContent.replace(',', '.');
+                    total += parseFloat(contribuicaoText);
+                });
+
+                totalCell.textContent = total.toFixed(2).replace('.', ',');
+            }
+        });
+    </script>
+</body>
+</html>
